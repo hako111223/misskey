@@ -19,6 +19,7 @@ import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import MkA, { MkABehavior } from '@/components/global/MkA.vue';
 import { defaultStore } from '@/store.js';
+import katex from 'katex';
 
 function safeParseFloat(str: unknown): number | null {
 	if (typeof str !== 'string' || str === '') return null;
@@ -323,6 +324,13 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 							const clickEv = typeof token.props.args.ev === 'string' ? token.props.args.ev : '';
 							emit('clickEv', clickEv);
 						} }, genEl(token.children, scale));
+					}
+					case 'tex': {
+						return h('span', {
+							innerHTML: katex.renderToString(token.children[0].props.text, {
+						    	throwOnError: false
+							})
+						});
 					}
 				}
 				if (style === undefined) {
