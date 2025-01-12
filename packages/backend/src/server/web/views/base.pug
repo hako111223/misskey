@@ -38,6 +38,7 @@ html
 		link(rel='prefetch' href=infoImageUrl)
 		link(rel='prefetch' href=notFoundImageUrl)
 		link(rel='modulepreload' href=`/vite/${entry.file}`)
+		link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.16.19/dist/katex.min.css' integrity='sha384-7lU0muIg/i1plk7MgygDUp3/bNRA65orrBub4/OSWHECgwEsY83HaS1x3bljA/XV' crossorigin='anonymous')
 
 		if !config.frontendManifestExists
 				script(type="module" src="/vite/@vite/client")
