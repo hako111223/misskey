@@ -310,7 +310,8 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					case 'tex': {
 						return h('span', {
 							innerHTML: katex.renderToString(token.children[0].props.text, {
-						    	throwOnError: false
+						    	throwOnError: false,
+						    	displayMode: token.props.args.display
 							})
 						});
 					}
