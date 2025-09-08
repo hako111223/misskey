@@ -116,6 +116,7 @@ export const ROLE_POLICIES = [
 ] as const;
 
 export const MFM_TAGS = ['box', 'font', 'ruby', 'tex', 'unixtime'];
+
 export const MFM_PARAMS: Record<typeof MFM_TAGS[number], string[]> = {
 	box: [],
 	font: ['serif', 'monospace', 'cursive', 'fantasy', 'emoji', 'math'],
