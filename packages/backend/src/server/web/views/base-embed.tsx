@@ -45,6 +45,7 @@ export function BaseEmbed(props: PropsWithChildren<CommonProps<{
 					<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no" />
 					<link rel="icon" href={props.icon ?? '/favicon.ico'} />
 					<link rel="apple-touch-icon" href={props.appleTouchIcon ?? '/apple-touch-icon.png'} />
+					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi" crossorigin="anonymous" />
 
 					{!props.config.frontendEmbedManifestExists ? <script type="module" src="/embed_vite/@vite/client"></script> : null}
 

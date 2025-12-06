@@ -49,6 +49,7 @@ export function Layout(props: PropsWithChildren<CommonProps<{
 					<link rel="apple-touch-icon" href={props.appleTouchIcon || '/apple-touch-icon.png'} />
 					<link rel="manifest" href="/manifest.json" />
 					<link rel="search" type="application/opensearchdescription+xml" title={props.title || 'Misskey'} href={`${props.config.url}/opensearch.xml`} />
+					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi" crossorigin="anonymous" />
 					{props.serverErrorImageUrl != null ? <link rel="prefetch" as="image" href={props.serverErrorImageUrl} /> : null}
 					{props.infoImageUrl != null ? <link rel="prefetch" as="image" href={props.infoImageUrl} /> : null}
 					{props.notFoundImageUrl != null ? <link rel="prefetch" as="image" href={props.notFoundImageUrl} /> : null}
