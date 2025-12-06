@@ -117,6 +117,79 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 				// TODO: CSSを文字列で組み立てていくと token.props.args.~~~ 経由でCSSインジェクションできるのでよしなにやる
 				let style: string | undefined;
 				switch (token.props.name) {
+					case 'tada': {
+						const speed = validTime(token.props.args.speed) ?? '1s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = 'font-size: 150%;' + (useAnim ? `animation: global-tada ${speed} linear infinite both; animation-delay: ${delay};` : '');
+						break;
+					}
+					case 'jelly': {
+						const speed = validTime(token.props.args.speed) ?? '1s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = (useAnim ? `animation: mfm-rubberBand ${speed} linear infinite both; animation-delay: ${delay};` : '');
+						break;
+					}
+					case 'twitch': {
+						const speed = validTime(token.props.args.speed) ?? '0.5s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = useAnim ? `animation: mfm-twitch ${speed} ease infinite; animation-delay: ${delay};` : '';
+						break;
+					}
+					case 'shake': {
+						const speed = validTime(token.props.args.speed) ?? '0.5s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = useAnim ? `animation: mfm-shake ${speed} ease infinite; animation-delay: ${delay};` : '';
+						break;
+					}
+					case 'spin': {
+						const direction =
+							token.props.args.left ? 'reverse' :
+							token.props.args.alternate ? 'alternate' :
+							'normal';
+						const anime =
+							token.props.args.x ? 'mfm-spinX' :
+							token.props.args.y ? 'mfm-spinY' :
+							'mfm-spin';
+						const speed = validTime(token.props.args.speed) ?? '1.5s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = useAnim ? `animation: ${anime} ${speed} linear infinite; animation-direction: ${direction}; animation-delay: ${delay};` : '';
+						break;
+					}
+					case 'jump': {
+						const speed = validTime(token.props.args.speed) ?? '0.75s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = useAnim ? `animation: mfm-jump ${speed} linear infinite; animation-delay: ${delay};` : '';
+						break;
+					}
+					case 'bounce': {
+						const speed = validTime(token.props.args.speed) ?? '0.75s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = useAnim ? `animation: mfm-bounce ${speed} linear infinite; transform-origin: center bottom; animation-delay: ${delay};` : '';
+						break;
+					}
+					case 'flip': {
+						const transform =
+							(token.props.args.h && token.props.args.v) ? 'scale(-1, -1)' :
+							token.props.args.v ? 'scaleY(-1)' :
+							'scaleX(-1)';
+						style = `transform: ${transform};`;
+						break;
+					}
+					case 'x2': {
+						return h('span', {
+							class: 'mfm-x2',
+						}, genEl(token.children, scale * 2));
+					}
+					case 'x3': {
+						return h('span', {
+							class: 'mfm-x3',
+						}, genEl(token.children, scale * 3));
+					}
+					case 'x4': {
+						return h('span', {
+							class: 'mfm-x4',
+						}, genEl(token.children, scale * 4));
+					}
 					case 'font': {
 						const family =
 							token.props.args.serif ? 'serif' :
@@ -127,6 +200,69 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 							token.props.args.math ? 'math' :
 							null;
 						if (family) style = `font-family: ${family};`;
+						break;
+					}
+					case 'blur': {
+						return h('span', {
+							class: '_mfm_blur_',
+						}, genEl(token.children, scale));
+					}
+					case 'rainbow': {
+						if (!useAnim) {
+							return h('span', {
+								class: '_mfm_rainbow_fallback_',
+							}, genEl(token.children, scale));
+						}
+						const speed = validTime(token.props.args.speed) ?? '1s';
+						const delay = validTime(token.props.args.delay) ?? '0s';
+						style = `animation: mfm-rainbow ${speed} linear infinite; animation-delay: ${delay};`;
+						break;
+					}
+					case 'sparkle': {
+						return genEl(token.children, scale);
+					}
+					case 'rotate': {
+						const degrees = safeParseFloat(token.props.args.deg) ?? 90;
+						style = `transform: rotate(${degrees}deg); transform-origin: center center;`;
+						break;
+					}
+					case 'position': {
+						const x = safeParseFloat(token.props.args.x) ?? 0;
+						const y = safeParseFloat(token.props.args.y) ?? 0;
+						style = `transform: translateX(${x}em) translateY(${y}em);`;
+						break;
+					}
+					case 'scale': {
+						const x = Math.min(safeParseFloat(token.props.args.x) ?? 1, 5);
+						const y = Math.min(safeParseFloat(token.props.args.y) ?? 1, 5);
+						style = `transform: scale(${x}, ${y});`;
+						scale = scale * Math.max(x, y);
+						break;
+					}
+					case 'fg': {
+						let color = validColor(token.props.args.color);
+						color = color ?? 'f00';
+						style = `color: #${color}; overflow-wrap: anywhere;`;
+						break;
+					}
+					case 'bg': {
+						let color = validColor(token.props.args.color);
+						color = color ?? 'f00';
+						style = `background-color: #${color}; overflow-wrap: anywhere;`;
+						break;
+					}
+					case 'border': {
+						let color = validColor(token.props.args.color);
+						color = color ? `#${color}` : 'var(--MI_THEME-accent)';
+						let b_style = token.props.args.style;
+						if (
+							typeof b_style !== 'string' ||
+							!['hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']
+								.includes(b_style)
+						) b_style = 'solid';
+						const width = safeParseFloat(token.props.args.width) ?? 1;
+						const radius = safeParseFloat(token.props.args.radius) ?? 0;
+						style = `border: ${width}px ${b_style} ${color}; border-radius: ${radius}px;${token.props.args.noclip ? '' : ' overflow: clip;'}`;
 						break;
 					}
 					case 'ruby': {
